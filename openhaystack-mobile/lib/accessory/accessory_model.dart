@@ -201,7 +201,7 @@ class Accessory {
         'isActive': isActive,
         'isDeployed': isDeployed,
         'icon': _icon,
-        'color': color.toString().split('(0x')[1].split(')')[0],
+        'color': color.toARGB32().toRadixString(16).padLeft(8, '0'),
         'usesDerivation': usesDerivation,
         'symmetricKey': symmetricKey,
         'lastDerivationTimestamp': lastDerivationTimestamp,
