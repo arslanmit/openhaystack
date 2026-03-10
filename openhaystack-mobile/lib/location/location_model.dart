@@ -14,7 +14,7 @@ class LocationModel extends ChangeNotifier {
   bool initialLocationSet = false;
 
   /// Requests access to the device location from the user.
-  /// 
+  ///
   /// Initializes the location services and requests location
   /// access from the user if not granged.
   /// Returns if location access was granted.
@@ -33,7 +33,6 @@ class LocationModel extends ChangeNotifier {
     var permissionGranted = await _location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await _location.requestPermission();
-      
     }
 
     if (permissionGranted == PermissionStatus.granted) {
@@ -49,12 +48,11 @@ class LocationModel extends ChangeNotifier {
   }
 
   /// Requests location updates from the platform.
-  /// 
+  ///
   /// Listeners will be notified about locaiton changes.
   Future<void> requestLocationUpdates() async {
     var permissionGranted = await requestLocationAccess();
     if (permissionGranted) {
-
       // Handle future location updates
       locationStream ??= _location.onLocationChanged.listen(_updateLocation);
 
@@ -73,7 +71,7 @@ class LocationModel extends ChangeNotifier {
   }
 
   /// Updates the current location if new location data is available.
-  /// 
+  ///
   /// Additionally updates the current address information to match
   /// the new location.
   void _updateLocation(LocationData locationData) {
@@ -81,11 +79,10 @@ class LocationModel extends ChangeNotifier {
       // print('Locaiton here: ${locationData.latitude!}, ${locationData.longitude!}');
       here = LatLng(locationData.latitude!, locationData.longitude!);
       initialLocationSet = true;
-      getAddress(here!)
-        .then((value) {
-          herePlace = value;
-          notifyListeners();
-        });
+      getAddress(here!).then((value) {
+        herePlace = value;
+        notifyListeners();
+      });
     } else {
       print('Received invalid location data: $locationData');
     }
@@ -109,7 +106,7 @@ class LocationModel extends ChangeNotifier {
   }
 
   /// Returns the address for a given geolocation (latitude & longitude).
-  /// 
+  ///
   /// Only works on mobile platforms with their local APIs.
   static Future<geocode.Placemark?> getAddress(LatLng? location) async {
     if (location == null) {
@@ -119,13 +116,13 @@ class LocationModel extends ChangeNotifier {
     double lng = location.longitude;
 
     try {
-      List<geocode.Placemark> placemarks = await geocode.placemarkFromCoordinates(lat, lng);
+      List<geocode.Placemark> placemarks =
+          await geocode.placemarkFromCoordinates(lat, lng);
       return placemarks.first;
     } on MissingPluginException {
       return null;
     } on PlatformException {
-      return null; 
+      return null;
     }
   }
-
 }

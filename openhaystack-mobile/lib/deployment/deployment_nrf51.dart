@@ -20,16 +20,18 @@ class DeploymentInstructionsNRF51 extends StatelessWidget {
         const Step(
           title: Text('Requirements'),
           content: Text('To build the firmware the GNU Arm Embedded '
-            'Toolchain is required.'),
+              'Toolchain is required.'),
         ),
         Step(
           title: const Text('Download'),
           content: Column(
             children: [
               const Text('Download the firmware source code from GitHub '
-                'and navigate to the given folder.'),
+                  'and navigate to the given folder.'),
               Hyperlink(target: 'https://github.com/seemoo-lab/openhaystack'),
-              CodeBlock(text: 'git clone https://github.com/seemoo-lab/openhaystack.git && cd openhaystack/Firmware/Microbit_v1'),
+              CodeBlock(
+                  text:
+                      'git clone https://github.com/seemoo-lab/openhaystack.git && cd openhaystack/Firmware/Microbit_v1'),
             ],
           ),
         ),
@@ -38,10 +40,11 @@ class DeploymentInstructionsNRF51 extends StatelessWidget {
           content: Column(
             children: [
               const Text('Replace the public_key in main.c (initially '
-                'OFFLINEFINEINGPUBLICKEYHERE!) with the actual '
-                'advertisement key. Then execute make to create the '
-                'firmware.'),
-              CodeBlock(text: 'static char public_key[28] = "$advertisementKey";'),
+                  'OFFLINEFINEINGPUBLICKEYHERE!) with the actual '
+                  'advertisement key. Then execute make to create the '
+                  'firmware.'),
+              CodeBlock(
+                  text: 'static char public_key[28] = "$advertisementKey";'),
               CodeBlock(text: 'make'),
             ],
           ),
@@ -51,15 +54,14 @@ class DeploymentInstructionsNRF51 extends StatelessWidget {
           content: Column(
             children: [
               const Text('If the firmware is built successfully it can '
-                'be deployed to the microcontroller with the following '
-                'command.'),
+                  'be deployed to the microcontroller with the following '
+                  'command.'),
               const Text(
                 'Please fill in the volume of your microcontroller.',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              
               CodeBlock(text: 'make install  DEPLOY_PATH=/Volumes/MICROBIT'),
             ],
           ),

@@ -25,8 +25,8 @@ class AccessoryPrivateKeyInput extends StatelessWidget {
             return 'Private key must be provided.';
           }
           try {
-            var removeEscaping = value
-              .replaceAll('\\', '').replaceAll('\n', '');
+            var removeEscaping =
+                value.replaceAll('\\', '').replaceAll('\n', '');
             base64Decode(removeEscaping);
           } catch (e) {
             return 'Value must be valid base64 key.';
@@ -34,7 +34,7 @@ class AccessoryPrivateKeyInput extends StatelessWidget {
           return null;
         },
         onSaved: (newValue) =>
-          changeListener(newValue?.replaceAll('\\', '').replaceAll('\n', '')),
+            changeListener(newValue?.replaceAll('\\', '').replaceAll('\n', '')),
       ),
     );
   }

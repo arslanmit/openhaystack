@@ -9,18 +9,16 @@ import 'package:openhaystack_mobile/item_management/accessory_name_input.dart';
 import 'package:openhaystack_mobile/deployment/deployment_instructions.dart';
 
 class AccessoryGeneration extends StatefulWidget {
-
   /// Displays a page to create a new accessory.
-  /// 
+  ///
   /// The parameters of the new accessory can be input in text fields.
-  const AccessoryGeneration({ Key? key }) : super(key: key);
+  const AccessoryGeneration({Key? key}) : super(key: key);
 
   @override
   _AccessoryGenerationState createState() => _AccessoryGenerationState();
 }
 
 class _AccessoryGenerationState extends State<AccessoryGeneration> {
-
   /// Stores the properties of the new accessory.
   Accessory newAccessory = Accessory(
     id: '',
@@ -43,7 +41,8 @@ class _AccessoryGenerationState extends State<AccessoryGeneration> {
         var keyPair = await FindMyController.generateKeyPair();
         advertisementKey = keyPair.getBase64AdvertisementKey();
         newAccessory.hashedPublicKey = keyPair.hashedPublicKey;
-        AccessoryRegistry accessoryRegistry = Provider.of<AccessoryRegistry>(context, listen: false);
+        AccessoryRegistry accessoryRegistry =
+            Provider.of<AccessoryRegistry>(context, listen: false);
         accessoryRegistry.addAccessory(newAccessory);
         return true;
       }
@@ -90,7 +89,8 @@ class _AccessoryGenerationState extends State<AccessoryGeneration> {
                 },
               ),
               const ListTile(
-                title: Text('A secure key pair will be generated for you automatically.'),
+                title: Text(
+                    'A secure key pair will be generated for you automatically.'),
               ),
               SwitchListTile(
                 value: newAccessory.isActive,
@@ -129,9 +129,11 @@ class _AccessoryGenerationState extends State<AccessoryGeneration> {
                     if (created) {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => DeploymentInstructions(
-                          advertisementKey: advertisementKey ?? '<ADVERTISEMENT_KEY>',
-                        )),
+                        MaterialPageRoute(
+                            builder: (context) => DeploymentInstructions(
+                                  advertisementKey:
+                                      advertisementKey ?? '<ADVERTISEMENT_KEY>',
+                                )),
                       );
                     }
                   },

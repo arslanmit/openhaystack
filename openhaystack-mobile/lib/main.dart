@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         darkTheme: ThemeData.dark(),
-        home:  const AppLayout(),
+        home: const AppLayout(),
       ),
     );
   }
@@ -53,28 +53,36 @@ class _AppLayoutState extends State<AppLayout> {
   initState() {
     super.initState();
 
-    _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
-      .listen(handleFileSharingIntent, onError: print);
-    ReceiveSharingIntent.getInitialMedia()
-      .then(handleFileSharingIntent);
+    if (Platform.isAndroid || Platform.isIOS) {
+      _intentDataStreamSubscription = ReceiveSharingIntent.instance
+          .getMediaStream()
+          .listen(handleFileSharingIntent, onError: print);
+      ReceiveSharingIntent.instance.getInitialMedia().then((files) async {
+        await handleFileSharingIntent(files);
+        await ReceiveSharingIntent.instance.reset();
+      });
+    }
 
-    var accessoryRegistry = Provider.of<AccessoryRegistry>(context, listen: false);
+    var accessoryRegistry =
+        Provider.of<AccessoryRegistry>(context, listen: false);
     accessoryRegistry.loadAccessories();
   }
 
-   Future<void>  handleFileSharingIntent(List<SharedMediaFile> files) async {
+  Future<void> handleFileSharingIntent(List<SharedMediaFile> files) async {
     // Received a sharing intent with a number of files.
     // Import the accessories for each device in sequence.
     // If no files are shared do nothing
     for (var file in files) {
-      if (file.type == SharedMediaType.FILE) {
+      if (file.type == SharedMediaType.file) {
         // On iOS the file:// prefix has to be stripped to access the file path
         String path = Platform.isIOS
-          ? Uri.decodeComponent(file.path.replaceFirst('file://', ''))
-          : file.path;
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ItemFileImport(filePath: path),
-        ));
+            ? Uri.decodeComponent(file.path.replaceFirst('file://', ''))
+            : file.path;
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ItemFileImport(filePath: path),
+            ));
       }
     }
   }
@@ -92,7 +100,6 @@ class _AppLayoutState extends State<AppLayout> {
     super.didChangeDependencies();
   }
 
-
   @override
   Widget build(BuildContext context) {
     bool isInitialized = context.watch<UserPreferences>().initialized;
@@ -102,7 +109,6 @@ class _AppLayoutState extends State<AppLayout> {
     }
 
     Size screenSize = MediaQuery.of(context).size;
-    Orientation orientation = MediaQuery.of(context).orientation;
 
     // TODO: More advanced media query handling
     if (screenSize.width < 800) {

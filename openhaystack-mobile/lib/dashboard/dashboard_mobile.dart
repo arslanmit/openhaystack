@@ -9,27 +9,25 @@ import 'package:openhaystack_mobile/preferences/preferences_page.dart';
 import 'package:openhaystack_mobile/preferences/user_preferences_model.dart';
 
 class DashboardMobile extends StatefulWidget {
-
   /// Displays the layout for the mobile view of the app.
-  /// 
+  ///
   /// The layout is optimized for a vertically aligned small screens.
   /// The functionality is structured in a bottom tab bar for easy access
   /// on mobile devices.
-  const DashboardMobile({ Key? key }) : super(key: key);
+  const DashboardMobile({Key? key}) : super(key: key);
 
   @override
   _DashboardMobileState createState() => _DashboardMobileState();
 }
 
 class _DashboardMobileState extends State<DashboardMobile> {
-
   /// A list of the tabs displayed in the bottom tab bar.
   late final List<Map<String, dynamic>> _tabs = [
     {
       'title': 'My Accessories',
       'body': (ctx) => AccessoryMapListVertical(
-        loadLocationUpdates: loadLocationUpdates,
-      ),
+            loadLocationUpdates: loadLocationUpdates,
+          ),
       'icon': Icons.place,
       'label': 'Map',
     },
@@ -49,7 +47,8 @@ class _DashboardMobileState extends State<DashboardMobile> {
     // Initialize models and preferences
     var userPreferences = Provider.of<UserPreferences>(context, listen: false);
     var locationModel = Provider.of<LocationModel>(context, listen: false);
-    var locationPreferenceKnown = userPreferences.locationPreferenceKnown ?? false;
+    var locationPreferenceKnown =
+        userPreferences.locationPreferenceKnown ?? false;
     var locationAccessWanted = userPreferences.locationAccessWanted ?? false;
     if (!locationPreferenceKnown || locationAccessWanted) {
       locationModel.requestLocationUpdates();
@@ -61,7 +60,8 @@ class _DashboardMobileState extends State<DashboardMobile> {
 
   /// Fetch locaiton updates for all accessories.
   Future<void> loadLocationUpdates() async {
-    var accessoryRegistry = Provider.of<AccessoryRegistry>(context, listen: false);
+    var accessoryRegistry =
+        Provider.of<AccessoryRegistry>(context, listen: false);
     try {
       await accessoryRegistry.loadLocationReports();
     } catch (e) {
@@ -81,6 +81,7 @@ class _DashboardMobileState extends State<DashboardMobile> {
 
   /// The selected tab index.
   int _selectedIndex = 0;
+
   /// Updates the currently displayed tab to [index].
   void _onItemTapped(int index) {
     setState(() {
@@ -98,7 +99,8 @@ class _DashboardMobileState extends State<DashboardMobile> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const PreferencesPage()),
+                MaterialPageRoute(
+                    builder: (context) => const PreferencesPage()),
               );
             },
             icon: const Icon(Icons.settings),
@@ -107,15 +109,18 @@ class _DashboardMobileState extends State<DashboardMobile> {
       ),
       body: _tabs[_selectedIndex]['body'](context),
       bottomNavigationBar: BottomNavigationBar(
-        items: _tabs.map((tab) => BottomNavigationBarItem(
-          icon: Icon(tab['icon']),
-          label: tab['label'],
-        )).toList(),
+        items: _tabs
+            .map((tab) => BottomNavigationBarItem(
+                  icon: Icon(tab['icon']),
+                  label: tab['label'],
+                ))
+            .toList(),
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).indicatorColor,
         onTap: _onItemTapped,
       ),
-      floatingActionButton: _tabs[_selectedIndex]['actionButton']?.call(context),
+      floatingActionButton:
+          _tabs[_selectedIndex]['actionButton']?.call(context),
     );
   }
 }

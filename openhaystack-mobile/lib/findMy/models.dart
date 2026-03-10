@@ -39,9 +39,8 @@ class FindMyReport {
 
   FindMyReport(this.datePublished, this.payload, this.id, this.statusCode);
 
-  FindMyReport.completeInit(this.datePublished, this.payload, this.id, this.statusCode,
-  this.confidence, this.timestamp);
-
+  FindMyReport.completeInit(this.datePublished, this.payload, this.id,
+      this.statusCode, this.confidence, this.timestamp);
 }
 
 class FindMyKeyPair {
@@ -52,16 +51,17 @@ class FindMyKeyPair {
 
   /// Time when this key was used to send BLE advertisements
   DateTime startTime;
+
   /// Duration from start time how long the key was used to send BLE advertisements
   double duration;
 
-  FindMyKeyPair(this._publicKey, this.hashedPublicKey, this._privateKey, this.startTime,
-      this.duration);
+  FindMyKeyPair(this._publicKey, this.hashedPublicKey, this._privateKey,
+      this.startTime, this.duration);
 
   String getBase64PublicKey() {
     return base64Encode(_publicKey.Q!.getEncoded(false));
   }
-  
+
   String getBase64PrivateKey() {
     return base64Encode(pc_utils.encodeBigIntAsUnsigned(_privateKey.d!));
   }

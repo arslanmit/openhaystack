@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DaysSelectionSlider extends StatefulWidget {
-
   /// The number of days currently selected.
   double numberOfDays;
+
   /// A callback listening for value changes.
   ValueChanged<double> onChanged;
 
@@ -52,5 +52,4 @@ class _DaysSelectionSliderState extends State<DaysSelectionSlider> {
       ),
     );
   }
-
 }

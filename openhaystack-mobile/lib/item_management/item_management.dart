@@ -8,9 +8,8 @@ import 'package:openhaystack_mobile/accessory/accessory_registry.dart';
 import 'package:intl/intl.dart';
 
 class KeyManagement extends StatelessWidget {
-
   /// Displays a list of all accessories.
-  /// 
+  ///
   /// Each accessory can be exported and is linked to a detail page.
   const KeyManagement({
     Key? key,
@@ -30,15 +29,17 @@ class KeyManagement extends StatelessWidget {
           child: ListView(
             children: accessories.map((accessory) {
               String lastSeen = accessory.datePublished != null
-                ? DateFormat('dd.MM.yyyy kk:mm').format(accessory.datePublished!)
-                : 'Unknown';
+                  ? DateFormat('dd.MM.yyyy kk:mm')
+                      .format(accessory.datePublished!)
+                  : 'Unknown';
               return ListTile(
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AccessoryDetail(
-                      accessory: accessory,
-                    )),
+                    MaterialPageRoute(
+                        builder: (context) => AccessoryDetail(
+                              accessory: accessory,
+                            )),
                   );
                 },
                 dense: true,

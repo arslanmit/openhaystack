@@ -15,8 +15,8 @@ class ItemExportMenu extends StatelessWidget {
   Accessory accessory;
 
   /// Displays a bottom sheet with export options.
-  /// 
-  /// The accessory can be exported to a JSON file or the 
+  ///
+  /// The accessory can be exported to a JSON file or the
   /// key parameters can be exported separately.
   ItemExportMenu({
     Key? key,
@@ -25,67 +25,79 @@ class ItemExportMenu extends StatelessWidget {
 
   /// Shows the export options for the [accessory].
   void showKeyExportSheet(BuildContext context, Accessory accessory) {
-    showModalBottomSheet(context: context, builder: (BuildContext context) {
-      return SafeArea(
-        child: ListView(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          children: [
-            ListTile(
-              trailing: IconButton(
-                onPressed: () {
-                  _showKeyExplanationAlert(context);
-                },
-                icon: const Icon(Icons.info),
-              ),
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              children: [
+                ListTile(
+                  trailing: IconButton(
+                    onPressed: () {
+                      _showKeyExplanationAlert(context);
+                    },
+                    icon: const Icon(Icons.info),
+                  ),
+                ),
+                ListTile(
+                  title: const Text('Export All Accessories (JSON)'),
+                  onTap: () async {
+                    var accessories =
+                        Provider.of<AccessoryRegistry>(context, listen: false)
+                            .accessories;
+                    await _exportAccessoriesAsJSON(accessories);
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Export Accessory (JSON)'),
+                  onTap: () async {
+                    await _exportAccessoriesAsJSON([accessory]);
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Export Hashed Advertisement Key (Base64)'),
+                  onTap: () async {
+                    var advertisementKey =
+                        await accessory.getHashedAdvertisementKey();
+                    await SharePlus.instance.share(
+                      ShareParams(text: advertisementKey),
+                    );
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Export Advertisement Key (Base64)'),
+                  onTap: () async {
+                    var advertisementKey =
+                        await accessory.getAdvertisementKey();
+                    await SharePlus.instance.share(
+                      ShareParams(text: advertisementKey),
+                    );
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Export Private Key (Base64)'),
+                  onTap: () async {
+                    var privateKey = await accessory.getPrivateKey();
+                    await SharePlus.instance.share(
+                      ShareParams(text: privateKey),
+                    );
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              title: const Text('Export All Accessories (JSON)'),
-              onTap: () async {
-                var accessories = Provider.of<AccessoryRegistry>(context, listen: false).accessories;
-                await _exportAccessoriesAsJSON(accessories);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Export Accessory (JSON)'),
-              onTap: () async {
-                await _exportAccessoriesAsJSON([accessory]);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Export Hashed Advertisement Key (Base64)'),
-              onTap: () async {
-                var advertisementKey = await accessory.getHashedAdvertisementKey();
-                Share.share(advertisementKey);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Export Advertisement Key (Base64)'),
-              onTap: () async {
-                var advertisementKey = await accessory.getAdvertisementKey();
-                Share.share(advertisementKey);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Export Private Key (Base64)'),
-              onTap: () async {
-                var privateKey = await accessory.getPrivateKey();
-                Share.share(privateKey);
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      );
-    });
+          );
+        });
   }
 
   /// Export the serialized [accessories] as a JSON file.
-  /// 
+  ///
   /// The OpenHaystack export format is used for interoperability with
   /// the desktop app.
   Future<void> _exportAccessoriesAsJSON(List<Accessory> accessories) async {
@@ -124,10 +136,11 @@ class ItemExportMenu extends StatelessWidget {
     String encodedAccessories = encoder.convert(exportAccessories);
     await file.writeAsString(encodedAccessories);
     // Share export file over os share dialog
-    Share.shareFiles(
-      [file.path],
-      mimeTypes: ['application/json'],
-      subject: filename,
+    await SharePlus.instance.share(
+      ShareParams(
+        files: [XFile(file.path, mimeType: 'application/json')],
+        subject: filename,
+      ),
     );
   }
 
@@ -141,13 +154,17 @@ class ItemExportMenu extends StatelessWidget {
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('Private Key:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Private Key:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Text('Secret key used for location report decryption.'),
-                Text('Advertisement Key:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Advertisement Key:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Text('Shortened public key sent out over Bluetooth.'),
-                Text('Hashed Advertisement Key:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Hashed Advertisement Key:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Text('Used to retrieve location reports from the server'),
-                Text('Accessory:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Accessory:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Text('A file containing all information about the accessory.'),
               ],
             ),

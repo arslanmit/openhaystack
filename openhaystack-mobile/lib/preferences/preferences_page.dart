@@ -4,9 +4,8 @@ import 'package:openhaystack_mobile/location/location_model.dart';
 import 'package:openhaystack_mobile/preferences/user_preferences_model.dart';
 
 class PreferencesPage extends StatefulWidget {
-
   /// Displays this preferences page with information about the app.
-  const PreferencesPage({ Key? key }) : super(key: key);
+  const PreferencesPage({Key? key}) : super(key: key);
 
   @override
   _PreferencesPageState createState() => _PreferencesPageState();
@@ -28,10 +27,12 @@ class _PreferencesPageState extends State<PreferencesPage> {
                 children: [
                   SwitchListTile(
                     title: const Text('Show this devices location'),
-                    value: !prefs.locationPreferenceKnown! || (prefs.locationAccessWanted ?? true),
+                    value: !prefs.locationPreferenceKnown! ||
+                        (prefs.locationAccessWanted ?? true),
                     onChanged: (showLocation) {
                       prefs.setLocationPreference(showLocation);
-                      var locationModel = Provider.of<LocationModel>(context, listen: false);
+                      var locationModel =
+                          Provider.of<LocationModel>(context, listen: false);
                       if (showLocation) {
                         locationModel.requestLocationUpdates();
                       } else {

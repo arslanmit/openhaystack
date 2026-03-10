@@ -4,10 +4,13 @@ import 'package:openhaystack_mobile/accessory/accessory_icon_selector.dart';
 class AccessoryIconInput extends StatelessWidget {
   /// The initial icon
   IconData initialIcon;
+
   /// The original icon name
   String iconString;
+
   /// The color of the icon
   Color color;
+
   /// Callback called when the icon is changed. Parameter is null
   /// if icon did not change
   ValueChanged<String?> changeListener;
@@ -32,8 +35,9 @@ class AccessoryIconInput extends StatelessWidget {
           OutlinedButton(
             child: const Text('Change'),
             onPressed: () async {
-              String? selectedIcon = await AccessoryIconSelector
-                .showIconSelection(context, iconString, color);
+              String? selectedIcon =
+                  await AccessoryIconSelector.showIconSelection(
+                      context, iconString, color);
               changeListener(selectedIcon);
             },
           ),

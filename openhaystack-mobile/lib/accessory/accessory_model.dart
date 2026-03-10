@@ -12,16 +12,16 @@ class Pair<T1, T2> {
   Pair(this.a, this.b);
 }
 
-
 const defaultIcon = Icons.push_pin;
-
 
 class Accessory {
   /// The ID of the accessory key.
   String id;
+
   /// A hash of the public key.
   /// An identifier for the private key stored separately in the key store.
   String hashedPublicKey;
+
   /// If the accessory uses rolling keys.
   bool usesDerivation;
 
@@ -30,16 +30,19 @@ class Accessory {
   double? lastDerivationTimestamp;
   int? updateInterval;
   String? oldestRelevantSymmetricKey;
-  
+
   /// The display name of the accessory.
   String name;
+
   /// The display icon of the accessory.
   String _icon;
+
   /// The display color of the accessory.
   Color color;
 
   /// If the accessory is active.
   bool isActive;
+
   /// If the accessory is already deployed
   /// (and could therefore send locations).
   bool isDeployed;
@@ -47,6 +50,7 @@ class Accessory {
   /// The timestamp of the last known location
   /// (null if no location known).
   DateTime? datePublished;
+
   /// The last known locations coordinates
   /// (null if no location known).
   LatLng? _lastLocation;
@@ -56,7 +60,6 @@ class Accessory {
 
   /// Stores address information about the current location.
   Future<Placemark?> place = Future.value(null);
-
 
   /// Creates an accessory with the given properties.
   Accessory({
@@ -74,7 +77,9 @@ class Accessory {
     this.lastDerivationTimestamp,
     this.updateInterval,
     this.oldestRelevantSymmetricKey,
-  }): _icon = icon, _lastLocation = lastLocation, super() {
+  })  : _icon = icon,
+        _lastLocation = lastLocation,
+        super() {
     _init();
   }
 
@@ -142,14 +147,14 @@ class Accessory {
   }
 
   /// The display icon of the accessory.
-  setIcon (String icon) {
+  setIcon(String icon) {
     _icon = icon;
   }
 
   /// Creates an accessory from deserialized JSON data.
-  /// 
+  ///
   /// Uses the same format as in [toJson]
-  /// 
+  ///
   /// Typically used with JSON decoder.
   /// ```dart
   ///   String json = '...';
@@ -160,9 +165,11 @@ class Accessory {
         name = json['name'],
         hashedPublicKey = json['hashedPublicKey'],
         datePublished = json['datePublished'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(json['datePublished']) : null,
+            ? DateTime.fromMillisecondsSinceEpoch(json['datePublished'])
+            : null,
         _lastLocation = json['latitude'] != null && json['longitude'] != null
-          ? LatLng(json['latitude'].toDouble(), json['longitude'].toDouble()) : null,
+            ? LatLng(json['latitude'].toDouble(), json['longitude'].toDouble())
+            : null,
         isActive = json['isActive'],
         isDeployed = json['isDeployed'],
         _icon = json['icon'],
@@ -176,31 +183,31 @@ class Accessory {
   }
 
   /// Creates a JSON map of the serialized accessory.
-  /// 
+  ///
   /// Uses the same format as in [Accessory.fromJson].
-  /// 
+  ///
   /// Typically used by JSON encoder.
   /// ```dart
   ///   var accessory = Accessory(...);
   ///   jsonEncode(accessory);
   /// ```
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'hashedPublicKey': hashedPublicKey,
-    'datePublished': datePublished?.millisecondsSinceEpoch,
-    'latitude': _lastLocation?.latitude,
-    'longitude': _lastLocation?.longitude,
-    'isActive': isActive,
-    'isDeployed': isDeployed,
-    'icon': _icon,
-    'color': color.toString().split('(0x')[1].split(')')[0],
-    'usesDerivation': usesDerivation,
-    'symmetricKey': symmetricKey,
-    'lastDerivationTimestamp': lastDerivationTimestamp,
-    'updateInterval': updateInterval,
-    'oldestRelevantSymmetricKey': oldestRelevantSymmetricKey,
-  };
+        'id': id,
+        'name': name,
+        'hashedPublicKey': hashedPublicKey,
+        'datePublished': datePublished?.millisecondsSinceEpoch,
+        'latitude': _lastLocation?.latitude,
+        'longitude': _lastLocation?.longitude,
+        'isActive': isActive,
+        'isDeployed': isDeployed,
+        'icon': _icon,
+        'color': color.toString().split('(0x')[1].split(')')[0],
+        'usesDerivation': usesDerivation,
+        'symmetricKey': symmetricKey,
+        'lastDerivationTimestamp': lastDerivationTimestamp,
+        'updateInterval': updateInterval,
+        'oldestRelevantSymmetricKey': oldestRelevantSymmetricKey,
+      };
 
   /// Returns the Base64 encoded hash of the advertisement key
   /// (used to fetch location reports).
@@ -221,5 +228,4 @@ class Accessory {
     var keyPair = await FindMyController.getKeyPair(hashedPublicKey);
     return keyPair.getBase64PrivateKey();
   }
-
 }

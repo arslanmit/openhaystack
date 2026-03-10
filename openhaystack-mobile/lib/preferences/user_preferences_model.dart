@@ -6,9 +6,9 @@ const locationPreferenceKnownKey = 'LOCATION_PREFERENCE_KNOWN';
 const locationAccessWantedKey = 'LOCATION_PREFERENCE_WANTED';
 
 class UserPreferences extends ChangeNotifier {
-
   /// If these settings are initialized.
   bool initialized = false;
+
   /// The shared preferences storage.
   SharedPreferences? _prefs;
 
@@ -57,11 +57,10 @@ class UserPreferences extends ChangeNotifier {
     if (!success) {
       return Future.value(false);
     } else {
-      var result = await _prefs!.setBool(locationAccessWantedKey, locationAccessWanted);
+      var result =
+          await _prefs!.setBool(locationAccessWantedKey, locationAccessWanted);
       notifyListeners();
       return result;
     }
-    
   }
-
 }

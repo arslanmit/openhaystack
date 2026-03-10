@@ -4,6 +4,7 @@ import 'package:openhaystack_mobile/accessory/accessory_color_selector.dart';
 class AccessoryColorInput extends StatelessWidget {
   /// The inititial color value
   Color color;
+
   /// Callback called when the color is changed. Parameter is null
   /// if color did not change
   ValueChanged<Color?> changeListener;
@@ -29,8 +30,9 @@ class AccessoryColorInput extends StatelessWidget {
           OutlinedButton(
             child: const Text('Change'),
             onPressed: () async {
-              Color? selectedColor = await AccessoryColorSelector
-                .showColorSelection(context, color);
+              Color? selectedColor =
+                  await AccessoryColorSelector.showColorSelection(
+                      context, color);
               changeListener(selectedColor);
             },
           ),

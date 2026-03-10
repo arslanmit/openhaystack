@@ -20,17 +20,21 @@ class DeploymentInstructionsLinux extends StatelessWidget {
         const Step(
           title: Text('Requirements'),
           content: Text('Install the hcitool software on a Bluetooth '
-            'Low Energy Linux device, for example a Raspberry Pi. '
-            'Additionally Pyhton 3 needs to be installed.'),
+              'Low Energy Linux device, for example a Raspberry Pi. '
+              'Additionally Pyhton 3 needs to be installed.'),
         ),
         Step(
           title: const Text('Download'),
           content: Column(
             children: [
               const Text('Next download the python script that '
-                'configures the HCI tool to send out BLE advertisements.'),
-              Hyperlink(target: 'https://raw.githubusercontent.com/seemoo-lab/openhaystack/main/Firmware/Linux_HCI/HCI.py'),
-              CodeBlock(text: 'curl -o HCI.py https://raw.githubusercontent.com/seemoo-lab/openhaystack/main/Firmware/Linux_HCI/HCI.py'),
+                  'configures the HCI tool to send out BLE advertisements.'),
+              Hyperlink(
+                  target:
+                      'https://raw.githubusercontent.com/seemoo-lab/openhaystack/main/Firmware/Linux_HCI/HCI.py'),
+              CodeBlock(
+                  text:
+                      'curl -o HCI.py https://raw.githubusercontent.com/seemoo-lab/openhaystack/main/Firmware/Linux_HCI/HCI.py'),
             ],
           ),
         ),

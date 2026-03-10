@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 class Hyperlink extends StatelessWidget {
   /// The target url to open.
   String target;
+
   /// The display text of the hyperlink. Default is [target].
   String _text;
 
@@ -12,20 +13,24 @@ class Hyperlink extends StatelessWidget {
     Key? key,
     required this.target,
     text,
-  }) : _text = text ?? target, super(key: key);
+  })  : _text = text ?? target,
+        super(key: key);
+
+  Future<void> _launch() async {
+    await launchUrl(Uri.parse(target));
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      child: Text(_text,
+      child: Text(
+        _text,
         style: const TextStyle(
           color: Colors.blue,
           decoration: TextDecoration.underline,
         ),
       ),
-      onTap: () {
-        launch(target);
-      },
+      onTap: _launch,
     );
   }
 }

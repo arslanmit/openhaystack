@@ -4,13 +4,15 @@ import 'package:flutter/foundation.dart';
 class AccessoryIcon extends StatelessWidget {
   /// The icon to display.
   final IconData icon;
+
   /// The color of the surrounding ring.
   final Color color;
+
   /// The size of the icon.
   final double size;
 
   /// Displays the icon in a colored ring.
-  /// 
+  ///
   /// The default size can be adjusted by setting the [size] parameter.
   const AccessoryIcon({
     Key? key,

@@ -4,7 +4,6 @@ import 'package:openhaystack_mobile/placeholder/avatar_placeholder.dart';
 import 'package:openhaystack_mobile/placeholder/text_placeholder.dart';
 
 class AccessoryListItemPlaceholder extends StatelessWidget {
-
   /// A placeholder for an [AccessoryListItem] showing a loading animation.
   const AccessoryListItemPlaceholder({
     Key? key,

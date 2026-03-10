@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/plugin_api.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:provider/provider.dart';
 import 'package:openhaystack_mobile/accessory/accessory_list.dart';
 import 'package:openhaystack_mobile/accessory/accessory_registry.dart';
@@ -18,22 +18,25 @@ class AccessoryMapListVertical extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AccessoryMapListVertical> createState() => _AccessoryMapListVerticalState();
+  State<AccessoryMapListVertical> createState() =>
+      _AccessoryMapListVerticalState();
 }
 
 class _AccessoryMapListVerticalState extends State<AccessoryMapListVertical> {
   final MapController _mapController = MapController();
 
   void _centerPoint(LatLng point) {
-    _mapController.fitBounds(
-      LatLngBounds(point),
+    _mapController.move(
+      point,
+      _mapController.camera.zoom,
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<AccessoryRegistry, LocationModel>(
-      builder: (BuildContext context, AccessoryRegistry accessoryRegistry, LocationModel locationModel, Widget? child) {
+      builder: (BuildContext context, AccessoryRegistry accessoryRegistry,
+          LocationModel locationModel, Widget? child) {
         return Column(
           children: [
             Flexible(

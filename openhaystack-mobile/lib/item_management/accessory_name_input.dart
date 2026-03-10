@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AccessoryNameInput extends StatelessWidget {
   ValueChanged<String?>? onSaved;
   ValueChanged<String>? onChanged;
+
   /// The initial accessory name
   String? initialValue;
 

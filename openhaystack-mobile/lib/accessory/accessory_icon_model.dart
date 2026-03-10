@@ -3,14 +3,26 @@ import 'package:flutter/material.dart';
 class AccessoryIconModel {
   /// A list of all available icons
   static const List<String> icons = [
-    "creditcard.fill", "briefcase.fill", "case.fill", "latch.2.case.fill",
-    "key.fill", "mappin", "globe", "crown.fill",
-    "gift.fill", "car.fill", "bicycle", "figure.walk",
-    "heart.fill", "hare.fill", "tortoise.fill", "eye.fill",
+    "creditcard.fill",
+    "briefcase.fill",
+    "case.fill",
+    "latch.2.case.fill",
+    "key.fill",
+    "mappin",
+    "globe",
+    "crown.fill",
+    "gift.fill",
+    "car.fill",
+    "bicycle",
+    "figure.walk",
+    "heart.fill",
+    "hare.fill",
+    "tortoise.fill",
+    "eye.fill",
   ];
 
   /// A mapping from the cupertino icon names to the material icon names.
-  /// 
+  ///
   /// If the icons do not match, so a similar replacement is used.
   static const iconMapping = {
     'creditcard.fill': Icons.credit_card,
