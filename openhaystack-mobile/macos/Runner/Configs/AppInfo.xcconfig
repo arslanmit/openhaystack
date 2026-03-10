@@ -7,8 +7,13 @@
 // The application's name. By default this is also the title of the Flutter window.
 PRODUCT_NAME = openhaystack_mobile
 
+OPENHAYSTACK_APPLE_TEAM_ID =
+OPENHAYSTACK_MACOS_BUNDLE_ID = de.seemoo.macos.openhaystack
+#include? "LocalSigning.xcconfig"
+
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = de.seemoo.macos.openhaystack
+PRODUCT_BUNDLE_IDENTIFIER = $(OPENHAYSTACK_MACOS_BUNDLE_ID)
+DEVELOPMENT_TEAM = $(OPENHAYSTACK_APPLE_TEAM_ID)
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2021 com.example. All rights reserved.

@@ -1,2 +1,7 @@
+OPENHAYSTACK_APPLE_TEAM_ID = H9XHQ4WHSF
+OPENHAYSTACK_IOS_BUNDLE_ID = de.seemoo.ios.openhaystack
+OPENHAYSTACK_IOS_SHARE_EXTENSION_BUNDLE_ID = de.seemoo.ios.openhaystack.ShareExtension
+OPENHAYSTACK_IOS_APP_GROUP = group.de.seemoo.ios.openhaystack
+#include? "LocalSigning.xcconfig"
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
 #include "Generated.xcconfig"
