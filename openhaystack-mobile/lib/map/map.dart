@@ -78,10 +78,14 @@ class _AccessoryMapState extends State<AccessoryMap> {
     if (coordinates.isEmpty) {
       return;
     }
+    if (coordinates.length == 1) {
+      _mapController.move(coordinates.first, 13.0);
+      return;
+    }
     _mapController.fitCamera(
       CameraFit.coordinates(
         coordinates: coordinates,
-        padding: EdgeInsets.all(25),
+        padding: const EdgeInsets.all(25),
       ),
     );
   }

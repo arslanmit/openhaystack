@@ -123,6 +123,8 @@ class LocationModel extends ChangeNotifier {
       return null;
     } on PlatformException {
       return null;
+    } catch (_) {
+      return null;
     }
   }
 }
