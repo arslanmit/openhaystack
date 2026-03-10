@@ -1,14 +1,18 @@
 import 'dart:collection';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:openhaystack_mobile/accessory/accessory_model.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:openhaystack_mobile/findMy/find_my_controller.dart';
 import 'package:openhaystack_mobile/findMy/models.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:openhaystack_mobile/storage/app_storage.dart';
+import 'package:openhaystack_mobile/storage/secure_key_storage.dart';
 
 const accessoryStorageKey = 'ACCESSORIES';
+
+bool isValidLocationReport(FindMyLocationReport report) {
+  return report.latitude.abs() <= 90 && report.longitude.abs() <= 180;
+}
 
 class AccessoryRegistry extends ChangeNotifier {
   List<Accessory> _accessories = [];
@@ -57,6 +61,7 @@ class AccessoryRegistry extends ChangeNotifier {
   Future<void> overwriteEverythingWithDemoDataForDebugging() async {
     // Delete everything to start with a fresh set of demo accessories
     await AppStorage.deleteAll();
+    await SecureKeyStorage.deleteAll();
 
     // Load demo accessories
     List<Accessory> demoAccessories = [
@@ -121,8 +126,7 @@ class AccessoryRegistry extends ChangeNotifier {
           "Found ${reports.length} reports for accessory '${accessory.name}'");
 
       accessory.locationHistory = reports
-          .where((report) =>
-              report.latitude.abs() <= 90 && report.longitude.abs() < 90)
+          .where(isValidLocationReport)
           .map((report) => Pair<LatLng, DateTime>(
                 LatLng(report.latitude, report.longitude),
                 report.timestamp ?? report.published,

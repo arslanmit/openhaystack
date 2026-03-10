@@ -1,7 +1,5 @@
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:isolate';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:pointycastle/export.dart';
@@ -10,7 +8,7 @@ import 'package:pointycastle/src/utils.dart' as pc_utils;
 import 'package:openhaystack_mobile/findMy/decrypt_reports.dart';
 import 'package:openhaystack_mobile/findMy/models.dart';
 import 'package:openhaystack_mobile/findMy/reports_fetcher.dart';
-import 'package:openhaystack_mobile/storage/app_storage.dart';
+import 'package:openhaystack_mobile/storage/secure_key_storage.dart';
 
 class FindMyController {
   static final ECCurve_secp224r1 _curveParams = ECCurve_secp224r1();
@@ -45,7 +43,7 @@ class FindMyController {
   static Future<void> _loadPrivateKey(FindMyKeyPair keyPair) async {
     String? privateKey;
     if (!_keyCache.containsKey(keyPair.hashedPublicKey)) {
-      privateKey = await AppStorage.read(keyPair.hashedPublicKey);
+      privateKey = await SecureKeyStorage.read(keyPair.hashedPublicKey);
       final newKey =
           _keyCache.putIfAbsent(keyPair.hashedPublicKey, () => privateKey);
       assert(newKey == privateKey);
@@ -58,11 +56,7 @@ class FindMyController {
   /// Derives an [ECPublicKey] from a given [ECPrivateKey] on the given curve.
   static ECPublicKey _derivePublicKey(ECPrivateKey privateKey) {
     final pk = _curveParams.G * privateKey.d;
-    final publicKey = ECPublicKey(pk, _curveParams);
-    print(
-        "Isolate:${Isolate.current.hashCode}: Point Data: ${base64Encode(publicKey.Q!.getEncoded(false))}");
-
-    return publicKey;
+    return ECPublicKey(pk, _curveParams);
   }
 
   /// Decrypts the encrypted reports with the given [FindMyKeyPair] and private key.
@@ -90,7 +84,7 @@ class FindMyController {
   /// Returns the to the base64 encoded given hashed public key
   /// corresponding [FindMyKeyPair] from the local [FlutterSecureStorage].
   static Future<FindMyKeyPair> getKeyPair(String base64HashedPublicKey) async {
-    final privateKeyBase64 = await AppStorage.read(base64HashedPublicKey);
+    final privateKeyBase64 = await SecureKeyStorage.read(base64HashedPublicKey);
 
     ECPrivateKey privateKey = ECPrivateKey(
         pc_utils.decodeBigIntWithSign(1, base64Decode(privateKeyBase64!)),
@@ -112,7 +106,8 @@ class FindMyController {
     final keyPair = FindMyKeyPair(
         publicKey, hashedPublicKey, privateKey, DateTime.now(), -1);
 
-    await AppStorage.write(hashedPublicKey, keyPair.getBase64PrivateKey());
+    await SecureKeyStorage.write(
+        hashedPublicKey, keyPair.getBase64PrivateKey());
 
     return keyPair;
   }
@@ -134,7 +129,7 @@ class FindMyController {
     final hashedKey = getHashedPublicKey(publicKey: publicKey);
     final keyPair =
         FindMyKeyPair(publicKey, hashedKey, privateKey, DateTime.now(), -1);
-    await AppStorage.write(hashedKey, keyPair.getBase64PrivateKey());
+    await SecureKeyStorage.write(hashedKey, keyPair.getBase64PrivateKey());
 
     return keyPair;
   }

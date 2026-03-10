@@ -29,18 +29,7 @@ class _AccessoryHistoryState extends State<AccessoryHistory> {
 
   double numberOfDays = 7;
 
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _fitToHistory();
-    });
-  }
-
-  Future<void> _fitToHistory() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-
+  void _fitToHistory() {
     final historicLocations =
         widget.accessory.locationHistory.map((entry) => entry.a).toList();
     if (historicLocations.isEmpty) {
@@ -97,6 +86,7 @@ class _AccessoryHistoryState extends State<AccessoryHistory> {
                       popupEntry = null;
                     });
                   },
+                  onMapReady: _fitToHistory,
                 ),
                 children: [
                   TileLayer(

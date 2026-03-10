@@ -183,13 +183,13 @@ class _ItemFileImportState extends State<ItemFileImport> {
         child: Column(
           children: [
             Text(
-              'An error occured.',
+              'An error occurred.',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
-                  errorText ?? 'An unknown error occured. Please try again.'),
+                  errorText ?? 'An unknown error occurred. Please try again.'),
             ),
           ],
         ),
